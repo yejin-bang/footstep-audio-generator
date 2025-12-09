@@ -1,0 +1,139 @@
+{
+    "model_type": "diffusion_cond",
+    "sample_size": 265000,
+    "sample_rate": 44100,
+    "audio_channels": 2,
+    "model": {
+        "pretransform": {
+            "type": "autoencoder",
+            "iterate_batch": true,
+            "config": {
+                "encoder": {
+                    "type": "oobleck",
+                    "requires_grad": false,
+                    "config": {
+                        "in_channels": 2,
+                        "channels": 128,
+                        "c_mults": [1, 2, 4, 8, 16],
+                        "strides": [2, 4, 4, 8, 8],
+                        "latent_dim": 128,
+                        "use_snake": true
+                    }
+                },
+                "decoder": {
+                    "type": "oobleck",
+                    "config": {
+                        "out_channels": 2,
+                        "channels": 128,
+                        "c_mults": [1, 2, 4, 8, 16],
+                        "strides": [2, 4, 4, 8, 8],
+                        "latent_dim": 64,
+                        "use_snake": true,
+                        "final_tanh": false
+                    }
+                },
+                "bottleneck": {
+                    "type": "vae"
+                },
+                "latent_dim": 64,
+                "downsampling_ratio": 2048,
+                "io_channels": 2
+            }
+        },
+        "conditioning": {
+            "configs": [
+                {
+                    "id": "prompt",
+                    "type": "t5",
+                    "config": {
+                        "t5_model_name": "t5-base",
+                        "max_length": 128
+                    }
+                },
+                {
+                    "id": "seconds_start",
+                    "type": "number",
+                    "config": {
+                        "min_val": 0,
+                        "max_val": 512
+                    }
+                },
+                {
+                    "id": "seconds_total",
+                    "type": "number",
+                    "config": {
+                        "min_val": 0,
+                        "max_val": 512
+                    }
+                }
+            ],
+            "cond_dim": 768
+        },
+        "diffusion": {
+            "cross_attention_cond_ids": ["prompt", "seconds_start", "seconds_total"],
+            "global_cond_ids": ["seconds_start", "seconds_total"],
+            "type": "dit",
+            "config": {
+                "io_channels": 64,
+                "embed_dim": 1536,
+                "depth": 24,
+                "num_heads": 24,
+                "cond_token_dim": 768,
+                "global_cond_dim": 1536,
+                "project_cond_tokens": false,
+                "transformer_type": "continuous_transformer"
+            }
+        },
+        "io_channels": 64
+    },
+    "training": {
+        "pre_encoded": true,
+        "use_ema": true,
+        "log_loss_info": false,
+        "optimizer_configs": {
+            "diffusion": {
+                "optimizer": {
+                    "type": "AdamW",
+                    "config": {
+                        "lr": 1e-4,
+                        "betas": [0.9, 0.999],
+                        "weight_decay": 0.01
+                    }
+                },
+                "scheduler": {
+                    "type": "CosineAnnealingWithWarmup",
+                    "config": {
+                        "warmup_steps": 500,
+                        "max_steps": 6300,
+                        "eta_min": 0
+                    }
+                }
+            }
+        },
+        "demo": {
+            "demo_every": 500,
+            "demo_steps": 100,
+            "num_demos": 7,
+            "demo_cond": [
+                {"prompt": "heavy boots walking on marble floor with echoing footsteps", "seconds_start": 0, "seconds_total": 6}, 
+                {"prompt": "high heels clicking on concrete pavement", "seconds_start": 0, "seconds_total": 6},  
+                {"prompt": "dress shoes walking on wooden deck", "seconds_start": 0, "seconds_total": 6}, 
+                {"prompt": "barefoot footsteps on metal grating", "seconds_start": 0, "seconds_total": 6}, 
+                {"prompt": "boots walking through water with splashing sounds", "seconds_start": 0, "seconds_total": 6},  
+                {"prompt": "sneakers walking on sandy beach", "seconds_start": 0, "seconds_total": 6},  
+                {"prompt": "heels tapping on metal stairs with sharp echo", "seconds_start": 0, "seconds_total": 6}
+            ],
+            "demo_cfg_scales": [7.0]
+        }
+    },
+    "lora": {
+        "component_whitelist": ["transformer"],
+        "multiplier": 1.0,
+        "rank": 32,
+        "alpha": 64,
+        "dropout": 0,
+        "module_dropout": 0,
+        "lr": 1e-4,
+        "weight_decompose": false
+    }
+}

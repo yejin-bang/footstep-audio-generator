@@ -1,0 +1,41 @@
+# Core Dependencies
+numpy>=1.24.0
+scipy>=1.10.0
+
+# Computer Vision & Pose Estimation
+opencv-python>=4.8.0
+mediapipe>=0.10.0
+
+# Audio Processing
+soundfile>=0.12.0
+librosa>=0.10.0
+
+# Machine Learning / AI
+torch>=2.0.0
+torchvision>=0.15.0
+clip @ git+https://github.com/openai/CLIP.git
+
+# Visualization
+matplotlib>=3.7.0
+
+# API / Cloud Integration
+requests>=2.31.0
+python-dotenv>=1.0.0
+
+# Development Tools
+pytest>=7.4.0
+pytest-cov>=4.1.0
+
+# Code Quality Tools (optional)
+# black>=23.0.0
+# flake8>=6.0.0
+# mypy>=1.0.0
+
+# System Requirements (not Python packages):
+# - ffmpeg: Required for video merging (--merge-video flag)
+#   Install: brew install ffmpeg (macOS) | apt-get install ffmpeg (Linux)
+
+# Note: For local GPU audio generation (optional):
+# - Install LoRAW framework (custom, not on PyPI)
+# - Install stable-audio-tools from Stability AI
+# See CLAUDE.md for detailed local setup instructions

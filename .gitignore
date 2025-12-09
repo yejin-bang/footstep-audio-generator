@@ -1,0 +1,167 @@
+# ============================================================================
+# Python
+# ============================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# ============================================================================
+# Virtual Environments
+# ============================================================================
+venv/
+ENV/
+env/
+.venv
+
+# ============================================================================
+# IDEs & Editors
+# ============================================================================
+.vscode/
+.idea/
+.claude/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+.settings/
+
+# ============================================================================
+# Testing & Coverage
+# ============================================================================
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+# tests/ - REMOVED: We want to track tests for portfolio!
+# pytest.ini - REMOVED: We want to track pytest config!
+
+
+# ============================================================================
+# Jupyter Notebooks
+# ============================================================================
+.ipynb_checkpoints/
+# Note: examples/notebooks/ is tracked, only .ipynb_checkpoints/ is ignored
+
+# ============================================================================
+# Audio & Video Files (too large for git)
+# ============================================================================
+# These patterns prevent large media files from being committed
+*.wav
+*.mp3
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.flac
+*.ogg
+
+# Ignore generated data but keep test data structure
+# Test files in data/ are blocked by the patterns above
+data/videos/*.mp4
+data/audio/*.wav
+audio_output_base_model/
+
+# ============================================================================
+# Output Directories
+# ============================================================================
+# All output directories are generated and should not be tracked
+outputs/
+pipeline_outputs/
+generated_outputs/
+output/
+completed_audio/
+final_output_test/
+data/
+archive/
+# examples/ - REMOVED: We want to track examples directory!
+
+
+# ============================================================================
+# Development Directories (old structure - kept for backward compatibility)
+# ============================================================================
+test_videos/
+test_audios/
+tests_process/
+practice/
+sfx/
+# web/ - REMOVED: We want to track web directory!
+audio-validation/
+
+# Archive is tracked (contains old code versions for reference)
+# If you don't want to track archive, uncomment the line below:
+# archive/
+
+# ============================================================================
+# Model Files (large)
+# ============================================================================
+models/*.pt
+models/*.pth
+models/*.ckpt
+*.pkl
+*.ckpt
+fine-tuning(LoRA)/
+LoRAW/
+
+# ============================================================================
+# Environment & Secrets
+# ============================================================================
+.env
+.env.local
+.env.*.local
+
+# ============================================================================
+# System Files
+# ============================================================================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ============================================================================
+# Docker
+# ============================================================================
+_docker/
+docker-compose.override.yml
+
+# ============================================================================
+# Logging
+# ============================================================================
+logs/
+*.log
+PORTFOLIO_CHECKLIST.md
+
+# ============================================================================
+# Documentation Build
+# ============================================================================
+docs/_build/
+docs/.doctrees/
+CLAUDE.md
+
+# ============================================================================
+# Web App Generated Files
+# ============================================================================
+web/uploads/
+web/results/
+web/frontend/node_modules/
+web/frontend/dist/

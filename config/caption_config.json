@@ -1,0 +1,135 @@
+{
+  
+  "surface_sound_map": {
+    "concrete": {
+      "boots": ["thudding", "clomping", "scuffing", "scraping", "striking"],
+      "heels": ["clicking", "tapping", "clacking", "ticking"],
+      "barefoot": ["patting", "slapping", "padding"],
+      "sneakers": ["scuffing", "squeaking", "padding"],
+      "dress shoes": ["tapping", "clicking", "clacking", "scuffing"]
+    },
+    "wood": {
+      "boots": ["thudding", "clomping", "creaking", "knocking"],
+      "heels": ["clicking", "tapping", "clacking", "knocking"],
+      "barefoot": ["patting", "creaking", "squeaking", "padding"],
+      "sneakers": ["squeaking", "scuffing", "creaking", "padding"],
+      "dress shoes": ["tapping", "clicking", "clacking", "creaking"]
+    },
+    "marble": {
+      "boots": ["thudding", "clomping", "banging"],
+      "heels": ["clicking", "tapping", "clacking", "ringing"],
+      "dress shoes": ["tapping", "clicking", "clacking", "ringing"]
+    },
+    "metal": {
+      "boots": ["clanging", "banging", "ringing", "clanking", "clunking"],
+      "heels": ["clicking", "tapping", "ringing", "clinking"],
+      "sneakers": ["squeaking", "scuffing", "padding", "rubbing"],
+      "dress shoes": ["tapping", "clicking", "ringing", "clinking"]
+    },
+    "gravel": {
+      "boots": ["crunching", "grinding", "crackling", "rattling"],
+      "sneakers": ["crunching", "scuffing", "grinding"]
+    },
+    "dirt": {
+      "boots": ["crunching", "scraping", "scuffing", "grinding"],
+      "heels": ["crunching", "tapping", "clicking"],
+      "sneakers": ["crunching", "scuffing", "padding"],
+      "dress shoes": ["crunching", "tapping", "clicking", "scuffing"]
+    },
+    "leaves": {
+      "boots": ["crunching", "crackling", "rustling", "crumpling"]
+    },
+    "sand": {
+      "barefoot": ["crunching", "shuffling", "swishing", "shifting"],
+      "sneakers": ["crunching", "shuffling", "scuffing", "swishing"]
+    },
+    "snow": {
+      "boots": ["crunching", "squeaking"]
+    },
+    "mud": {
+      "boots": ["squelching", "sucking", "plopping", "splashing", "sloshing"],
+      "sneakers": ["squelching", "sucking", "squishing"]
+    },
+    "deck": {
+      "boots": ["thudding", "clomping", "creaking", "knocking"],
+      "barefoot": ["patting", "tapping", "creaking", "slapping"],
+      "sneakers": ["padding", "scuffing", "creaking", "squeaking"],
+      "dress shoes": ["tapping", "clicking", "clacking", "creaking"]
+    },
+    "water": {
+      "boots": ["splashing", "sloshing", "slapping", "dripping"]
+    }
+  
+},
+
+
+"footwear_materials": {
+  "boots": [
+    "heavy-soled boots",
+    "thick leather boots",
+    "sturdy work boots",
+    "rugged hiking boots"
+  ],
+  "heels": [
+    "high heels",
+    "dress heels"
+  ],
+  "barefoot": [
+    "bare feet"
+  ],
+  "sneakers": [
+    "rubber-soled sneakers",
+    "soft-soled sneakers"
+  ],
+  "dress_shoes": [
+    "hard-soled dress shoes",
+    "leather dress shoes",
+    "formal shoes",
+    "polished dress shoes"
+  ]
+},
+"timbres" : {
+
+    "boots": ["deep", "low-pitched", "dense", "solid", "resonant", "rich", "full"],
+
+    "heels": ["sharp", "bright", "high-pitched", "clear", "crisp", "piercing"],
+
+    "barefoot": ["soft", "warm", "smooth", "gentle", "subtle", "muted"],
+
+    "sneakers": ["rubbery", "cushioned", "mellow", "soft-toned"],
+
+    "dress_shoes": ["deep", "resonant", "low-pitched", "rich", "solid", "hollow"]
+
+},
+
+"intensities":{
+
+    "boots": ["heavy", "firm", "strong", "forceful", "powerful"],
+
+    "heels": ["light", "snappy", "quick", "brisk", "percussive"],
+
+    "barefoot": ["quiet", "delicate", "light", "whispered"],
+
+    "sneakers": ["light", "bouncy", "quick", "muffled"],
+
+    "dress_shoes": ["firm", "strong", "forceful", "steady"]
+},
+
+    "locations": {
+        "concrete": ["pathway", "sidewalk", "pavement", "street", "urban pavement"],
+        "wood": ["hallway", "platform", "interior space", "boardwalk"],
+        "marble": ["hall", "lobby", "corridor"],
+        "gravel": ["driveway", "path", "trail", "area"],
+        "dirt": ["trail", "path", "ground", "road", "track", "field"],
+        "metal": ["catwalk", "industrial surface", "grated floor", "staircase", "scaffold"],
+        "deck": ["dock", "boardwalk", "pier", "patio"],
+        "leaves": ["forest floor", "path", "trail"],
+        "snow": ["ski trail", "winter road", "icy surface", "terrain"],
+        "water": ["puddles", "pool", "ocean", "stream"],
+        "mud": ["patch", "puddle", "wet ground", "bog"],
+        "sand": ["beach", "dune", "shore", "desert"]
+    }
+
+}
+
+

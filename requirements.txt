@@ -38,4 +38,3 @@ pytest-cov>=4.1.0
 # Note: For local GPU audio generation (optional):
 # - Install LoRAW framework (custom, not on PyPI)
 # - Install stable-audio-tools from Stability AI
-# See CLAUDE.md for detailed local setup instructions

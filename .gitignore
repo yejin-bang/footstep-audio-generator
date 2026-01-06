@@ -165,3 +165,5 @@ web/uploads/
 web/results/
 web/frontend/node_modules/
 web/frontend/dist/
+.DS_Store
+demo.mp4

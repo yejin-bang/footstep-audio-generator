@@ -20,17 +20,6 @@ class RunPodBackend(AudioBackend):
     Uses RunPod's async API to generate audio on remote GPUs.
     Requires RUNPOD_API_KEY and RUNPOD_ENDPOINT_URL in environment
     or passed as arguments.
-
-    Example:
-        >>> # Using environment variables (.env file)
-        >>> backend = RunPodBackend()
-        >>> audio, sr, metadata = backend.generate("boots on marble")
-
-        >>> # Passing credentials explicitly
-        >>> backend = RunPodBackend(
-        ...     api_key="your_key",
-        ...     endpoint_url="https://api.runpod.ai/v2/YOUR_ID/run"
-        ... )
     """
 
     def __init__(
@@ -48,9 +37,6 @@ class RunPodBackend(AudioBackend):
             endpoint_url: RunPod endpoint URL (or use RUNPOD_ENDPOINT_URL env var)
             timeout: Request timeout in seconds (default: 300)
             poll_interval: How often to poll for results (default: 2.0s)
-
-        Raises:
-            ValueError: If credentials are not provided
         """
         try:
             self.client = RunPodClient(
@@ -89,9 +75,6 @@ class RunPodBackend(AudioBackend):
             - audio_array: Shape [channels, samples]
             - sample_rate: Integer sample rate in Hz
             - metadata: Dict with generation info
-
-        Raises:
-            RunPodError: If generation fails
         """
         try:
             # Call RunPod API

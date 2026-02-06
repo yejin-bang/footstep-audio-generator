@@ -16,7 +16,7 @@ class DetectorConfig:
     target_fps: int = 10
     confidence_threshold: float = 0.7
     
-    # Peak detection parameters (proven values from raw visualizer)
+    # Peak detection parameters
     peak_height_threshold: float = 0.1
     peak_prominence: float = 0.05
     peak_distance: int = 5  # frames
@@ -30,21 +30,12 @@ class DetectorConfig:
 
 
 class FootstepDetector:
-    """
-    Proven footstep detection approach with spatial data extraction
-
-    Architecture:
-    Video -> PoseExtractor -> Hip-Heel Distances -> Normalize -> Peak Detection
-    -> Alternation Filter -> Spatial Data Extraction -> Timestamps + Spatial Info
-
-    Based on the working raw visualizer logic - no complex pipeline, no signal processing
-    """
 
     def __init__(self, config: Optional[DetectorConfig] = None):
-        """Initialize detector with proven components"""
+        """Initialize detector"""
         self.config = config if config is not None else DetectorConfig()
 
-        # Initialize working components
+        # Initialize
         self.pose_extractor = PoseExtractor(
             target_fps=self.config.target_fps,
             confidence_threshold=self.config.confidence_threshold
@@ -53,7 +44,7 @@ class FootstepDetector:
     
     def process_video(self, video_path: str, verbose: bool = True) -> Dict[str, Any]:
         """
-        Main processing method - proven pipeline from raw visualizer with spatial extraction
+        Main processing method
         
         Args:
             video_path: Path to video file
@@ -117,10 +108,10 @@ class FootstepDetector:
             'heel_strike_detections': final_detections,  # (timestamp, foot_side) pairs
             'total_detections': len(final_detections),
 
-            # NEW: Spatial data for audio spatialization
+            # Spatial data for audio spatialization
             'spatial_data': spatial_data,  # List of dicts with x_position, hip_heel_distance, etc.
 
-            # NEW: Stored frames for scene analysis (only frames with valid pose)
+            # Stored frames for scene analysis (only frames with valid pose)
             'frames': stored_frames,  # Raw frames for scene_analyzer
 
             # Detailed data for analysis
@@ -205,7 +196,7 @@ class FootstepDetector:
         right_distances = np.array(right_distances)
         timestamps_array = np.array(timestamps)
         
-        # Normalize distances (0-1 range) - proven approach
+        # Normalize distances (0-1 range)
         left_distances = self._normalize_signal(left_distances)
         right_distances = self._normalize_signal(right_distances)
         
@@ -224,7 +215,7 @@ class FootstepDetector:
         }
     
     def _normalize_signal(self, signal: np.ndarray) -> np.ndarray:
-        """Normalize signal to 0-1 range (from raw visualizer)"""
+        """Normalize signal to 0-1 range"""
         valid_mask = ~np.isnan(signal)
         if np.sum(valid_mask) < 2:
             return signal
@@ -237,7 +228,7 @@ class FootstepDetector:
         return signal
     
     def _detect_peaks(self, distance_results: Dict[str, Any], verbose: bool = False) -> Dict[str, Any]:
-        """Detect peaks in distance signals (from raw visualizer)"""
+        """Detect peaks in distance signals"""
         
         left_distances = distance_results['left_distances']
         right_distances = distance_results['right_distances']
@@ -267,7 +258,7 @@ class FootstepDetector:
     
     def _find_peaks_in_signal(self, distances: np.ndarray, timestamps: np.ndarray, 
                             side: str) -> Tuple[List[int], List[float]]:
-        """Find peaks in a single distance signal (from raw visualizer)"""
+        """Find peaks in a single distance signal"""
         
         # Remove NaN values for peak detection
         valid_mask = ~np.isnan(distances)
@@ -295,7 +286,7 @@ class FootstepDetector:
     
     def _apply_alternation_filter(self, peak_results: Dict[str, Any], 
                                 verbose: bool = False) -> List[Tuple[float, str]]:
-        """Apply left-right alternation filter (from raw visualizer)"""
+        """Apply left-right alternation filter"""
         
         left_peaks = peak_results['left_peaks']
         right_peaks = peak_results['right_peaks']
@@ -392,9 +383,6 @@ class FootstepDetector:
                 center_x = None
             
             # Calculate hip-heel pixel distance for the striking foot
-            # CRITICAL: Use UNNORMALIZED distance (actual pixel distance)
-            # Larger distance = person closer to camera = louder footstep
-            # Smaller distance = person farther from camera = quieter footstep
             if foot_side == 'LEFT':
                 if (left_hip[0] is not None and left_heel[0] is not None and
                     left_hip[2] >= self.config.confidence_threshold and
@@ -424,7 +412,7 @@ class FootstepDetector:
             spatial_info = {
                 'timestamp': det_timestamp,
                 'foot_side': foot_side,
-                'x_position': center_x,  # 0-1 normalized (center of person)
+                'x_position': center_x,  # Raw pixel coordinate
                 'hip_heel_pixel_distance': hip_heel_distance,  # Unnormalized pixel distance
                 'confidence': confidence
             }
@@ -483,7 +471,7 @@ if __name__ == "__main__":
     detector = FootstepDetector(config)
     
     # Test video path
-    video_path = "./test_videos/walk4.mp4"
+    video_path = "path_to_your_video"
     
     try:
         # Process video

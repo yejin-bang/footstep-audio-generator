@@ -1,0 +1,11 @@
+{
+    "dataset_type": "pre_encoded",
+    "datasets": [
+        {
+            "id": "footsteps",
+            "path": "path_to_data"
+        }
+    ],
+    "random_crop": false,
+    "shuffle": true  
+}

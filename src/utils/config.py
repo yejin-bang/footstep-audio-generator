@@ -2,16 +2,7 @@
 Centralized Configuration for Footstep Audio Pipeline
 
 Provides centralized path management and configuration constants.
-Eliminates hardcoded paths throughout the codebase.
 
-Usage:
-    from src.utils.config import CONFIG_DIR, TEST_VIDEOS_DIR, get_test_video
-
-    # Use predefined paths
-    caption_config = CONFIG_DIR / "caption_config.json"
-
-    # Get test resources
-    test_video = get_test_video("walk1.mp4")
 """
 
 import os
@@ -29,7 +20,7 @@ PROJECT_ROOT = Path(__file__).parent.parent.parent.resolve()
 # Source code directory
 SRC_DIR = PROJECT_ROOT / "src"
 
-# Utilities directory (now part of src/)
+# Utilities directory 
 UTILS_DIR = SRC_DIR / "utils"
 
 # ============================================================================
@@ -39,7 +30,6 @@ UTILS_DIR = SRC_DIR / "utils"
 CONFIG_DIR = PROJECT_ROOT / "config"
 CAPTION_CONFIG_PATH = CONFIG_DIR / "caption_config.json"
 MODEL_CONFIG_PATH = CONFIG_DIR / "model_config_lora.json"
-SCENE_CONFIG_PATH = CONFIG_DIR / "scene_config.json"
 
 # ============================================================================
 # Model Files
@@ -55,7 +45,7 @@ LORA_CHECKPOINT_PATH = MODELS_DIR / "best.ckpt"
 # Test data is now organized under data/ directory
 DATA_DIR = PROJECT_ROOT / "data"
 TEST_VIDEOS_DIR = DATA_DIR / "videos"
-TEST_AUDIOS_DIR = DATA_DIR / "audio"
+TEST_AUDIOS_DIR = DATA_DIR / "audios"
 GROUND_TRUTH_DIR = DATA_DIR / "ground_truth"
 
 # ============================================================================
@@ -74,15 +64,10 @@ def get_video_output_dir(video_path: str) -> Path:
     Get output directory for a specific video with timestamp.
 
     Args:
-        video_path: Path to video file (e.g., "walk4.mp4" or "/path/to/walk4.mp4")
+        video_path: Path to video file
 
     Returns:
-        Path to video-specific output directory with timestamp (e.g., outputs/walk4_outputs_20250121_143022/)
-
-    Example:
-        >>> output_dir = get_video_output_dir("walk4.mp4")
-        >>> print(output_dir)
-        /path/to/project/outputs/walk4_outputs_20250121_143022
+        Path to video-specific output directory with timestamp 
     """
     video_name = Path(video_path).stem
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -110,18 +95,10 @@ def get_test_video(filename: str) -> Path:
     Get path to a test video file.
 
     Args:
-        filename: Name of test video (e.g., "walk1.mp4")
+        filename: Name of test video (e.g., "video1.mp4")
 
     Returns:
         Full path to test video
-
-    Raises:
-        FileNotFoundError: If test video doesn't exist
-
-    Example:
-        >>> video_path = get_test_video("walk1.mp4")
-        >>> print(video_path)
-        /path/to/project/data/videos/walk1.mp4
     """
     path = TEST_VIDEOS_DIR / filename
     if not path.exists():
@@ -141,9 +118,6 @@ def get_test_audio(filename: str) -> Path:
 
     Returns:
         Full path to test audio
-
-    Raises:
-        FileNotFoundError: If test audio doesn't exist
     """
     path = TEST_AUDIOS_DIR / filename
     if not path.exists():
@@ -200,9 +174,6 @@ def get_config_value(key: str, default: Optional[str] = None) -> Optional[str]:
 
     Returns:
         Configuration value or default
-
-    Example:
-        >>> api_key = get_config_value("RUNPOD_API_KEY")
     """
     return os.getenv(key, default)
 
@@ -217,11 +188,6 @@ def validate_config() -> dict:
 
     Returns:
         Dictionary with validation results
-
-    Example:
-        >>> validation = validate_config()
-        >>> if not validation['valid']:
-        ...     print(validation['errors'])
     """
     errors = []
     warnings = []

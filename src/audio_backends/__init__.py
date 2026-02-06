@@ -3,15 +3,6 @@ Audio Generation Backends
 
 Pluggable backend system for audio generation. Supports multiple
 generation methods (RunPod, local GPU, cloud APIs, etc.)
-
-Usage:
-    from src.audio_backends import get_backend
-
-    # Get RunPod backend
-    backend = get_backend("runpod")
-    audio, sr, metadata = backend.generate(prompt="boots on marble")
-
-    # Users can implement their own backends by extending AudioBackend
 """
 
 from .base import AudioBackend
@@ -39,13 +30,6 @@ def get_backend(backend_name: str, **kwargs) -> AudioBackend:
 
     Returns:
         Initialized AudioBackend instance
-
-    Raises:
-        ValueError: If backend_name is not registered
-
-    Example:
-        >>> backend = get_backend("runpod", api_key="...", endpoint_url="...")
-        >>> audio, sr, metadata = backend.generate("footsteps on wood")
     """
     if backend_name not in _BACKENDS:
         available = ", ".join(_BACKENDS.keys())
@@ -70,15 +54,6 @@ def register_backend(name: str, backend_class: type):
     Args:
         name: Backend name
         backend_class: Class inheriting from AudioBackend
-
-    Example:
-        >>> class MyCustomBackend(AudioBackend):
-        ...     def generate(self, prompt, **kwargs):
-        ...         # Custom implementation
-        ...         pass
-        >>>
-        >>> register_backend("custom", MyCustomBackend)
-        >>> backend = get_backend("custom")
     """
     if not issubclass(backend_class, AudioBackend):
         raise TypeError(f"{backend_class} must inherit from AudioBackend")

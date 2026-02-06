@@ -10,8 +10,6 @@ Pipeline Flow:
 4. Prepare spatial data for audio processing
 5. Process spatial audio (chop, pan, attenuate, mix)
 6. Export final audio file (exact video duration)
-
-Industry Standard: Production-ready code with full error handling
 """
 
 import sys
@@ -23,27 +21,22 @@ from pathlib import Path
 from typing import Dict, List, Tuple, Optional
 from dataclasses import dataclass
 
-# Logging setup (professional alternative to print statements)
-# NOTE: Currently using print() for user-facing output. Future improvement:
-#       Migrate all print() to logger.info() for production deployment.
-from ..utils.logger import setup_logging, get_logger
 
+from ..utils.logger import setup_logging, get_logger
 logger = get_logger(__name__)
 
-# Import all components using relative imports
-# Note: VideoValidator is used internally by FootstepDetector, no need to import here
 from .footstep_detector import FootstepDetector, DetectorConfig
 from .scene_analyzer import SceneAnalyzer
 from .spatial_audio_processor import SpatialAudioProcessor
 from ..utils.video_merger import merge_audio_video, check_ffmpeg_installed
 from ..utils.config import CAPTION_CONFIG_PATH, get_video_output_dir
 
-# Import audio_generator with RunPod support
+
 try:
     from .audio_generator import generate_footsteps
     AUDIO_GENERATOR_AVAILABLE = True
 except ImportError:
-    print("⚠️  Warning: audio_generator.py not found")
+    # Audio generator not availble - using mock backend
     AUDIO_GENERATOR_AVAILABLE = False
 
 
@@ -92,10 +85,7 @@ class PipelineConfig:
 
 
 class FootstepAudioPipeline:
-    """
-    Complete end-to-end pipeline for footstep audio generation
-    
-    """
+    """Complete end-to-end pipeline for footstep audio generation"""
     
     def __init__(self, config: Optional[PipelineConfig] = None):
         """Initialize pipeline with all components"""
@@ -165,7 +155,7 @@ class FootstepAudioPipeline:
         print("-" * 80)
         detection_results = self.footstep_detector.process_video(str(video_path), verbose=True)
 
-        # Get video info from detection results (already validated by detector)
+        # Get video info from detection results
         video_info = detection_results['video_info']
         
         num_footsteps = len(detection_results['heel_strike_detections'])
@@ -183,7 +173,6 @@ class FootstepAudioPipeline:
         print("-" * 80)
         scene_results = self.scene_analyzer.analyze_from_detection_results(detection_results)
 
-        # For now, use the first segment's prompt (can be enhanced later)
         audio_prompt = scene_results[0]['prompt']
         print(f"\n✓ Generated prompt: '{audio_prompt}'")
         print()
@@ -298,7 +287,7 @@ class FootstepAudioPipeline:
         if self.config.save_intermediates:
             metadata_path = output_audio_path.with_suffix('.json')
             with open(metadata_path, 'w') as f:
-                # Create a copy and remove frames (too large for JSON)
+                # Create a copy and remove frames
                 results_for_json = results.copy()
                 if 'detection_results' in results_for_json and 'frames' in results_for_json['detection_results']:
                     # Remove frames to prevent huge JSON files and CPU spike
@@ -350,13 +339,6 @@ class FootstepAudioPipeline:
                     backend=self.config.backend
                 )
                 
-                
-                # If stereo, convert to mono for processing
-              #  if audio_array.ndim > 1 and audio_array.shape[0] > 1:
-              #      audio_array = np.mean(audio_array, axis=0)
-              #  elif audio_array.ndim > 1:
-              #      audio_array = audio_array[0]
-                
                 variations.append((audio_np, sr, audio_path))
                 
                 print(f"  ✓ Generated: {audio_path.name}")
@@ -374,7 +356,6 @@ class FootstepAudioPipeline:
         Step 5: Prepare spatial data for audio processing
 
         Extracts position and timing information from detection results.
-        The footstep detector already provides spatial_data, so we just use it.
         """
         # FootstepDetector already provides complete spatial_data
         if 'spatial_data' in detection_results and detection_results['spatial_data']:
@@ -400,10 +381,8 @@ class FootstepAudioPipeline:
         video_info: Dict,
         output_path: Path
     ) -> np.ndarray:
-        """
-        Use SpatialAudioProcessor to create final mix
-        """
-        # Pick first variation (or could merge all)
+        """Use SpatialAudioProcessor to create final mix"""
+
         audio_array, sample_rate, _ = audio_variations[0]
 
         # Create detection_results format expected by SpatialAudioProcessor
@@ -540,7 +519,6 @@ Example usage:
         args.output_dir = str(get_video_output_dir(args.video_path))
 
     # Create configuration - only pass CLI arguments
-    # This allows PipelineConfig defaults to work as the single source of truth
     config_kwargs = {}
 
     if args.backend is not None:

@@ -1,30 +1,85 @@
-{
-  
+{   "environment_options": [
+    "indoor office workspace",
+    "indoor home residential", 
+    "indoor kitchen",
+    "indoor shopping retail",
+    "indoor restaurant cafe",
+    "indoor gym sports facility", 
+    "indoor hallway corridor",
+    "outdoor city street",
+    "outdoor sidewalk pavement", 
+    "outdoor parking lot",
+    "outdoor urban plaza",
+    "outdoor beach sand",
+    "outdoor forest trail",
+    "outdoor park grass", 
+    "outdoor dirt gravel path",
+    "outdoor creek"
+  ],
+
+  "environment_surface_map": {
+    "indoor office workspace": "concrete",
+    "indoor home residential": "wood", 
+    "indoor kitchen": "wood",
+    "indoor shopping retail": "marble",
+    "indoor restaurant cafe": "wood",
+    "indoor gym sports facility": "concrete",
+    "indoor hallway corridor": "marble",
+    "outdoor city street": "concrete",
+    "outdoor sidewalk pavement": "concrete",
+    "outdoor parking lot": "concrete",
+    "outdoor urban plaza": "concrete",
+    "outdoor beach sand": "sand",
+    "outdoor forest trail": "dirt",
+    "outdoor park grass": "dirt",
+    "outdoor dirt gravel path": "gravel",
+    "outdoor creek": "mud"
+  },
+
+  "environment_footwear_map": {
+    "indoor office workspace": ["dress_shoes", "sneakers"],
+    "indoor home residential": ["sneakers", "barefoot"], 
+    "indoor kitchen": ["sneakers", "barefoot"],
+    "indoor shopping retail": ["sneakers", "dress_shoes"],
+    "indoor restaurant cafe": ["dress_shoes", "sneakers"],
+    "indoor gym sports facility": ["sneakers"],
+    "indoor hallway corridor": ["sneakers", "dress_shoes"],
+    "outdoor city street": ["sneakers", "boots", "dress_shoes"],
+    "outdoor sidewalk pavement": ["sneakers", "boots"],
+    "outdoor parking lot": ["sneakers", "boots"],
+    "outdoor urban plaza": ["sneakers", "dress_shoes", "boots"],
+    "outdoor beach sand": ["barefoot"],
+    "outdoor forest trail": ["boots"],
+    "outdoor park grass": ["sneakers"],
+    "outdoor dirt gravel path": ["boots", "sneakers"],
+    "outdoor creek": ["boots", "sneakers"]
+  },
+
   "surface_sound_map": {
     "concrete": {
       "boots": ["thudding", "clomping", "scuffing", "scraping", "striking"],
       "heels": ["clicking", "tapping", "clacking", "ticking"],
       "barefoot": ["patting", "slapping", "padding"],
       "sneakers": ["scuffing", "squeaking", "padding"],
-      "dress shoes": ["tapping", "clicking", "clacking", "scuffing"]
+      "dress_shoes": ["tapping", "clicking", "clacking", "scuffing"]
     },
     "wood": {
       "boots": ["thudding", "clomping", "creaking", "knocking"],
       "heels": ["clicking", "tapping", "clacking", "knocking"],
       "barefoot": ["patting", "creaking", "squeaking", "padding"],
       "sneakers": ["squeaking", "scuffing", "creaking", "padding"],
-      "dress shoes": ["tapping", "clicking", "clacking", "creaking"]
+      "dress_shoes": ["tapping", "clicking", "clacking", "creaking"]
     },
     "marble": {
       "boots": ["thudding", "clomping", "banging"],
       "heels": ["clicking", "tapping", "clacking", "ringing"],
-      "dress shoes": ["tapping", "clicking", "clacking", "ringing"]
+      "dress_shoes": ["tapping", "clicking", "clacking", "ringing"]
     },
     "metal": {
       "boots": ["clanging", "banging", "ringing", "clanking", "clunking"],
       "heels": ["clicking", "tapping", "ringing", "clinking"],
       "sneakers": ["squeaking", "scuffing", "padding", "rubbing"],
-      "dress shoes": ["tapping", "clicking", "ringing", "clinking"]
+      "dress_shoes": ["tapping", "clicking", "ringing", "clinking"]
     },
     "gravel": {
       "boots": ["crunching", "grinding", "crackling", "rattling"],
@@ -34,7 +89,7 @@
       "boots": ["crunching", "scraping", "scuffing", "grinding"],
       "heels": ["crunching", "tapping", "clicking"],
       "sneakers": ["crunching", "scuffing", "padding"],
-      "dress shoes": ["crunching", "tapping", "clicking", "scuffing"]
+      "dress_shoes": ["crunching", "tapping", "clicking", "scuffing"]
     },
     "leaves": {
       "boots": ["crunching", "crackling", "rustling", "crumpling"]
@@ -54,82 +109,71 @@
       "boots": ["thudding", "clomping", "creaking", "knocking"],
       "barefoot": ["patting", "tapping", "creaking", "slapping"],
       "sneakers": ["padding", "scuffing", "creaking", "squeaking"],
-      "dress shoes": ["tapping", "clicking", "clacking", "creaking"]
+      "dress_shoes": ["tapping", "clicking", "clacking", "creaking"]
     },
     "water": {
       "boots": ["splashing", "sloshing", "slapping", "dripping"]
     }
-  
-},
+  },
 
+  "footwear_materials": {
+    "boots": [
+      "heavy-soled boots",
+      "thick leather boots",
+      "sturdy work boots",
+      "rugged hiking boots"
+    ],
+    "heels": [
+      "high heels",
+      "dress heels"
+    ],
+    "barefoot": [
+      "bare feet"
+    ],
+    "sneakers": [
+      "rubber-soled sneakers",
+      "soft-soled sneakers"
+    ],
+    "dress_shoes": [
+      "hard-soled dress shoes",
+      "leather dress shoes",
+      "formal shoes",
+      "polished dress shoes"
+    ]
+  },
 
-"footwear_materials": {
-  "boots": [
-    "heavy-soled boots",
-    "thick leather boots",
-    "sturdy work boots",
-    "rugged hiking boots"
-  ],
-  "heels": [
-    "high heels",
-    "dress heels"
-  ],
-  "barefoot": [
-    "bare feet"
-  ],
-  "sneakers": [
-    "rubber-soled sneakers",
-    "soft-soled sneakers"
-  ],
-  "dress_shoes": [
-    "hard-soled dress shoes",
-    "leather dress shoes",
-    "formal shoes",
-    "polished dress shoes"
-  ]
-},
-"timbres" : {
-
+  "timbres": {
     "boots": ["deep", "low-pitched", "dense", "solid", "resonant", "rich", "full"],
-
     "heels": ["sharp", "bright", "high-pitched", "clear", "crisp", "piercing"],
-
     "barefoot": ["soft", "warm", "smooth", "gentle", "subtle", "muted"],
-
     "sneakers": ["rubbery", "cushioned", "mellow", "soft-toned"],
-
     "dress_shoes": ["deep", "resonant", "low-pitched", "rich", "solid", "hollow"]
+  },
 
-},
-
-"intensities":{
-
+  "intensities": {
     "boots": ["heavy", "firm", "strong", "forceful", "powerful"],
-
     "heels": ["light", "snappy", "quick", "brisk", "percussive"],
-
     "barefoot": ["quiet", "delicate", "light", "whispered"],
-
     "sneakers": ["light", "bouncy", "quick", "muffled"],
-
     "dress_shoes": ["firm", "strong", "forceful", "steady"]
-},
+  },
 
-    "locations": {
-        "concrete": ["pathway", "sidewalk", "pavement", "street", "urban pavement"],
-        "wood": ["hallway", "platform", "interior space", "boardwalk"],
-        "marble": ["hall", "lobby", "corridor"],
-        "gravel": ["driveway", "path", "trail", "area"],
-        "dirt": ["trail", "path", "ground", "road", "track", "field"],
-        "metal": ["catwalk", "industrial surface", "grated floor", "staircase", "scaffold"],
-        "deck": ["dock", "boardwalk", "pier", "patio"],
-        "leaves": ["forest floor", "path", "trail"],
-        "snow": ["ski trail", "winter road", "icy surface", "terrain"],
-        "water": ["puddles", "pool", "ocean", "stream"],
-        "mud": ["patch", "puddle", "wet ground", "bog"],
-        "sand": ["beach", "dune", "shore", "desert"]
-    }
+  "actions": ["walking", "stepping", "moving", "striding", "strolling"],
 
+  "forbidden_words": ["echo", "echoing", "reverb", "reverberant"],
+
+  "locations": {
+    "concrete": ["pathway", "sidewalk", "pavement", "street", "urban pavement"],
+    "wood": ["hallway", "platform", "interior space", "boardwalk"],
+    "marble": ["hall", "lobby", "corridor"],
+    "gravel": ["driveway", "path", "trail", "area"],
+    "dirt": ["trail", "path", "ground", "road", "track", "field"],
+    "metal": ["catwalk", "industrial surface", "grated floor", "staircase", "scaffold"],
+    "deck": ["dock", "boardwalk", "pier", "patio"],
+    "leaves": ["forest floor", "path", "trail"],
+    "snow": ["ski trail", "winter road", "icy surface", "terrain"],
+    "water": ["puddles", "pool", "ocean", "stream"],
+    "mud": ["patch", "puddle", "wet ground", "bog"],
+    "sand": ["beach", "dune", "shore", "desert"]
+  }
 }
-
-

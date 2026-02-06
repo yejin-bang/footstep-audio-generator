@@ -10,15 +10,7 @@ from ..pipeline.video_validator import VideoValidator
 
 
 class PoseExtractor:
-    """
-    Extract pose landmarks from video at 10fps for footstep detection
-    
-    Extracts specific landmarks needed for gait analysis:
-    - Hip: LEFT_HIP(23), RIGHT_HIP(24) 
-    - Heel: LEFT_HEEL(29), RIGHT_HEEL(30)
-    Paused: - Ankle: LEFT_ANKLE(27), RIGHT_ANKLE(28)
-    Paused: - Foot Index: LEFT_FOOT_INDEX(31), RIGHT_FOOT_INDEX(32)
-    """
+    """Extract pose landmarks from video at 10fps for footstep detection"""
     
     def __init__(self, target_fps: int = 10, confidence_threshold: float = 0.7):
         """
@@ -31,7 +23,7 @@ class PoseExtractor:
         self.target_fps = target_fps
         self.confidence_threshold = confidence_threshold
 
-        # Initialize VideoValidator (for standalone usage only)
+        # Initialize VideoValidator 
         self.video_validator = VideoValidator()
         
         # Initialize MediaPipe
@@ -48,12 +40,8 @@ class PoseExtractor:
         self.landmark_indices = {
             'LEFT_HIP': 23,
             'RIGHT_HIP': 24,
-            #'LEFT_ANKLE': 27,
-            #'RIGHT_ANKLE': 28,
             'LEFT_HEEL': 29,
             'RIGHT_HEEL': 30,
-            #'LEFT_FOOT_INDEX': 31,
-            #'RIGHT_FOOT_INDEX': 32
         }
     
     def extract_landmarks_from_frame(self, frame: np.ndarray) -> Optional[Dict[str, Tuple[float, float, float]]]:
@@ -265,7 +253,7 @@ if __name__ == "__main__":
     extractor = PoseExtractor(target_fps=30, confidence_threshold=0.7)
     
     # Process a video (replace with your video path)
-    video_path = "./test_videos/walk4.mp4" 
+    video_path = "path_to_your_video" 
     
     try:
         # Method 1: Get full result (backward compatibility)

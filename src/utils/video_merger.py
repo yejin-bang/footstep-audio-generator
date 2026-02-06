@@ -40,25 +40,6 @@ def merge_audio_video(
 
     Returns:
         Tuple of (success: bool, output_path: str)
-
-    Raises:
-        FileNotFoundError: If ffmpeg is not installed
-        FileNotFoundError: If input files don't exist
-
-    Example:
-        >>> # Save to specific path
-        >>> success, output = merge_audio_video(
-        ...     "video.mp4",
-        ...     "footsteps.wav",
-        ...     output_path="video_with_footsteps.mp4"
-        ... )
-
-        >>> # Save to specific directory
-        >>> success, output = merge_audio_video(
-        ...     "video.mp4",
-        ...     "footsteps.wav",
-        ...     output_dir="outputs/walk4_outputs"
-        ... )
     """
     if verbose:
         print("\n" + "=" * 80)
@@ -68,10 +49,7 @@ def merge_audio_video(
     # Check if ffmpeg is installed
     if not check_ffmpeg_installed():
         raise FileNotFoundError(
-            "ffmpeg is not installed. Install it via:\n"
-            "  macOS: brew install ffmpeg\n"
-            "  Linux: sudo apt-get install ffmpeg\n"
-            "  Windows: https://ffmpeg.org/download.html"
+            "ffmpeg is not installed."
         )
 
     # Validate input files
@@ -104,14 +82,6 @@ def merge_audio_video(
         print()
         print("Merging with ffmpeg...")
 
-    # Build ffmpeg command
-    # -i: input files
-    # -c:v copy: copy video stream without re-encoding (fast)
-    # -c:a aac: encode audio to AAC (compatible)
-    # -map 0:v: use video from first input
-    # -map 1:a: use audio from second input
-    # -shortest: match duration to shortest stream
-    # -y: overwrite output file if exists
     cmd = [
         "ffmpeg",
         "-i", str(video_path),      # Input video

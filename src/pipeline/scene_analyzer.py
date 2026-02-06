@@ -3,14 +3,10 @@
 Scene Analyzer with CLIP-based Environment Detection
 Generates footstep audio prompts from video scenes using environment classification.
 
-Industry-standard features:
+Features:
 - CLIP (ViT-B/32) for environment detection
 - Caption generation matching training vocabulary
 - Batch frame processing for stability
-- Clean error handling and logging
-- Type hints and comprehensive documentation
-
-Created for: Footstep Audio Generation Pipeline
 """
 
 import json
@@ -127,66 +123,16 @@ class SceneAnalyzer:
         self.timbres = config['timbres']
         self.intensities = config['intensities']
         self.locations = config['locations']
+        self.actions = config['actions']
         
         # Define environment options for CLIP
-        self.environment_options = [
-            "indoor office workspace",
-            "indoor home residential", 
-            "indoor kitchen",
-            "indoor shopping retail",
-            "indoor restaurant cafe",
-            "indoor gym sports facility", 
-            "indoor hallway corridor",
-            "outdoor city street",
-            "outdoor sidewalk pavement", 
-            "outdoor parking lot",
-            "outdoor urban plaza",
-            "outdoor beach sand",
-            "outdoor forest trail",
-            "outdoor park grass", 
-            "outdoor dirt gravel path",
-            "outdoor creek"
-        ]
+        self.environment_options = config['environment_options']
         
         # Environment to surface mapping
-        self.environment_surface_map = {
-            "indoor office workspace": "concrete",
-            "indoor home residential": "wood", 
-            "indoor kitchen": "wood",
-            "indoor shopping retail": "marble",
-            "indoor restaurant cafe": "wood",
-            "indoor gym sports facility": "concrete",
-            "indoor hallway corridor": "marble",
-            "outdoor city street": "concrete",
-            "outdoor sidewalk pavement": "concrete",
-            "outdoor parking lot": "concrete",
-            "outdoor urban plaza": "concrete",
-            "outdoor beach sand": "sand",
-            "outdoor forest trail": "dirt",
-            "outdoor park grass": "dirt",
-            "outdoor dirt gravel path": "gravel",
-            "outdoor creek": "mud"
-        }
+        self.environment_surface_map = config['environment_surface_map']
         
         # Environment to footwear mapping
-        self.environment_footwear_map = {
-            "indoor office workspace": ["dress_shoes", "sneakers"],
-            "indoor home residential": ["sneakers", "barefoot"], 
-            "indoor kitchen": ["sneakers", "barefoot"],
-            "indoor shopping retail": ["sneakers", "dress_shoes"],
-            "indoor restaurant cafe": ["dress_shoes", "sneakers"],
-            "indoor gym sports facility": ["sneakers"],
-            "indoor hallway corridor": ["sneakers", "dress_shoes"],
-            "outdoor city street": ["sneakers", "boots", "dress_shoes"],
-            "outdoor sidewalk pavement": ["sneakers", "boots"],
-            "outdoor parking lot": ["sneakers", "boots"],
-            "outdoor urban plaza": ["sneakers", "dress_shoes", "boots"],
-            "outdoor beach sand": ["barefoot"],
-            "outdoor forest trail": ["boots"],
-            "outdoor park grass": ["sneakers"],
-            "outdoor dirt gravel path": ["boots", "sneakers"],
-            "outdoor creek": ["boots", "sneakers"]
-        }
+        self.environment_footwear_map = config['environment_footwear_map']
         
         print(f"✓ Loaded caption config: {len(self.surface_sound_map)} surfaces")
     
@@ -198,9 +144,8 @@ class SceneAnalyzer:
         print(f"✓ CLIP model loaded on {self.device}")
     
     # ========================================================================
-    # MAIN ANALYSIS FUNCTIONS
+    # MAIN ANALYSIS FUNCTIONS 
     # ========================================================================
-    
     def analyze_video_segment(
         self,
         frames: List[np.ndarray],
@@ -244,15 +189,14 @@ class SceneAnalyzer:
         surface = self._get_surface_for_environment(environment)
         footwear = self._get_footwear_for_environment(environment)
         
-        # Generate comprehensive caption (medium length)
-        prompt = self._generate_comprehensive_caption(environment, surface, footwear)
+        # Generate comprehensive prompt (medium length)
+        prompt = self._generate_caption(environment, surface, footwear)
         
         print(f"  Environment: {environment} (confidence: {confidence:.3f})")
         print(f"  Surface: {surface}, Footwear: {footwear}")
         print(f"  Prompt: '{prompt}'")
         
-        # Return format expected by audio_generator
-        # seconds_total is always 6.0 (training length)
+        # seconds_total is 6.0 (training length)
         return {
             "prompt": prompt,
             "seconds_start": 0.0,
@@ -261,10 +205,9 @@ class SceneAnalyzer:
 
     def analyze_from_detection_results(self, detection_results: Dict) -> List[Dict]:
         """
-        Analyze scene from footstep detector results (clean architecture).
+        Analyze scene from footstep detector results.
 
         This method extracts frames stored by FootstepDetector and performs scene analysis.
-        It enables main_pipeline to be a pure orchestrator without frame sampling logic.
 
         Args:
             detection_results: Output from FootstepDetector.process_video() containing:
@@ -297,7 +240,6 @@ class SceneAnalyzer:
         # Get video duration
         video_duration = video_info.get('duration', 0.0)
 
-        # Analyze entire video as one segment
         # Frames are already randomly sampled (50 frames from entire video)
         scene_result = self.analyze_video_segment(
             frames=frames,
@@ -310,43 +252,6 @@ class SceneAnalyzer:
         # Return as list for compatibility with pipeline
         return [scene_result]
 
-    def analyze_multiple_segments(
-        self,
-        segments: List[Dict],
-        max_sample_frames: int = 5
-    ) -> List[Dict]:
-        """
-        Analyze multiple video segments.
-        
-        Args:
-            segments: List of dicts with 'frames', 'start_time', 'end_time'
-            max_sample_frames: Max frames to sample per segment
-        
-        Returns:
-            List of dicts ready for audio_generator:
-            [
-                {
-                    "prompt": "...",
-                    "seconds_start": 0.0,
-                    "seconds_total": 6.0
-                },
-                ...
-            ]
-        """
-        results = []
-        
-        for i, segment in enumerate(segments):
-            result = self.analyze_video_segment(
-                frames=segment['frames'],
-                start_time=segment['start_time'],
-                end_time=segment['end_time'],
-                segment_id=i,
-                max_sample_frames=max_sample_frames
-            )
-            results.append(result)
-        
-        return results
-    
     # ========================================================================
     # FRAME PROCESSING
     # ========================================================================
@@ -442,12 +347,9 @@ class SceneAnalyzer:
     # ========================================================================
     # CAPTION GENERATION (MATCHING TRAINING VOCABULARY)
     # ========================================================================
-    
+
     def _get_sound_descriptor(self, surface: str, footwear: str) -> str:
-        """
-        Get sound descriptor from surface_sound_map.
-        Same logic as caption_generator.py
-        """
+        """Get sound descriptor from surface_sound_map."""
         if surface not in self.surface_sound_map:
             return "stepping"
         
@@ -462,20 +364,14 @@ class SceneAnalyzer:
         sounds = self.surface_sound_map[surface][footwear]
         return random.choice(sounds)
     
-    def _generate_comprehensive_caption(
+    def _generate_caption(
         self,
         environment: str,
         surface: str,
         footwear: str
     ) -> str:
         """
-        Generate comprehensive medium-length caption combining all elements.
-        
-        Format: Material + Action + Context (9-15 words)
-        This combines the best elements from all three caption types used in training:
-        - Material: Physical objects (footwear material, surface)
-        - Context: Scene information (location, person)
-        - Character: Sound qualities (timbre, intensity, sound descriptor)
+        Generate comprehensive medium-length prompt.
         
         Args:
             environment: Detected environment
@@ -483,7 +379,7 @@ class SceneAnalyzer:
             footwear: Footwear type
         
         Returns:
-            Comprehensive caption string (medium length: 9-15 words)
+            Comprehensive prompt string (medium length: 9-15 words)
         """
         # Get vocabulary elements
         material = random.choice(self.footwear_materials.get(footwear, [footwear.replace('_', ' ')]))
@@ -493,13 +389,8 @@ class SceneAnalyzer:
         # Get character descriptors
         timbre = random.choice(self.timbres.get(footwear, ['steady']))
         intensity = random.choice(self.intensities.get(footwear, ['firm']))
-        
-        # Actions (same as training)
-        actions = ['walking', 'stepping', 'moving', 'striding', 'strolling']
-        action = random.choice(actions)
-        
-        # Generate comprehensive medium caption (9-15 words)
-        # Combines: material + sound character + context
+        action = random.choice(self.actions)
+
         templates = [
             # Material + Character + Context (10-13 words)
             f"{material} {action} steadily on {surface} {location} producing {timbre} {sound}",
@@ -535,12 +426,7 @@ class SceneAnalyzer:
         }
 
     def cleanup(self):
-        """
-        Clean up CLIP model resources to prevent hanging.
-
-        Releases PyTorch model from memory and clears CUDA cache if using GPU.
-        This prevents the program from hanging on exit due to unreleased resources.
-        """
+        """Clean up CLIP model resources to prevent hanging."""
         if hasattr(self, 'model') and self.model is not None:
             # Delete model to free memory
             del self.model
@@ -559,15 +445,14 @@ class SceneAnalyzer:
 # ============================================================================
 
 if __name__ == "__main__":
-    # Use centralized configuration instead of hardcoded paths
     from ..utils.config import CAPTION_CONFIG_PATH, get_test_video, list_test_videos
 
     # Get configuration and test resources
     caption_config = str(CAPTION_CONFIG_PATH)
 
-    # Get test video (try walk1.mp4, or use first available)
+    # Get test video 
     try:
-        test_video = str(get_test_video("walk1.mp4"))
+        test_video = str(get_test_video("your_test_video"))
     except FileNotFoundError:
         available = list_test_videos()
         if not available:

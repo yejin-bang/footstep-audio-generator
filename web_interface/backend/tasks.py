@@ -46,7 +46,7 @@ def process_footstep_video(self, job_id: str, video_filename: str, mode: str = "
 
         # Configure your pipeline
         config = PipelineConfig(
-            backend="runpod",  # Your audio backend
+            backend="mock",  # Your audio backend
             output_dir=str(RESULTS_DIR),
             save_intermediates=True,
             merge_video=True  # This will create the final video with audio

@@ -1,25 +1,6 @@
 #!/usr/bin/env python3
 """
 Spatial Audio Processor for Footstep Sound Generation
-
-Professional spatial audio processing pipeline:
-1. Load generated audio + detection results
-2. Quality checks (clipping, phase, normalization)
-3. Chop audio into individual footstep segments (quiet zone detection)
-4. Assign segments to timestamps (random with replacement)
-5. Apply spatial processing per footstep:
-   - Constant power panning (x-position)
-   - Inverse distance attenuation (depth)
-6. Mix all positioned footsteps into final stereo track
-7. Match video duration, apply fades
-8. Export with visualization
-
-Industry Standards:
-- Panning: Constant power (-3dB pan law, sin/cos taper), subtle width (20%)
-- Attenuation: Inverse distance law (6dB per doubling)
-- Normalization: -6dB peak (professional SFX standard)
-- Sample rate: 44.1kHz (can output 48kHz if needed)
-
 """
 
 import librosa
@@ -36,9 +17,7 @@ warnings.filterwarnings('ignore')
 
 
 class SpatialAudioProcessor:
-    """
-    Professional spatial audio processor for footstep sound generation
-    """
+    """Spatial audio processor for footstep sound generation"""
     
     def __init__(self,
                  sample_rate: int = 44100,
@@ -227,13 +206,7 @@ class SpatialAudioProcessor:
     def _chop_audio_at_quiet_zones(self, audio: np.ndarray, sr: int) -> List[Dict]:
         """
         Step 3: Chop audio into individual footstep segments using QUIET ZONE detection
-        
-        This is the IMPROVED method that:
-        1. Finds actual quiet regions between peaks
-        2. Cuts at safe points (low RMS zones)
-        3. Preserves complete footstep envelopes (attack + sustain + decay)
-        4. Returns segments WITH peak offset information for proper alignment
-        
+    
         Returns:
             List of dicts containing:
             - 'audio': np.ndarray segment
@@ -388,16 +361,7 @@ class SpatialAudioProcessor:
                            video_duration: float,
                            video_width: int,
                            sr: int) -> np.ndarray:
-        """
-        Step 5: Create spatialized stereo mix with PEAK-ALIGNED placement
-
-        For each detected footstep:
-        1. Randomly select a segment (with replacement if needed)
-        2. Apply distance attenuation based on hip-heel pixel distance
-        3. Apply constant power panning based on x-position (normalized 0-1)
-        4. Place so segment's PEAK aligns with detection timestamp
-        5. Add with crossfade to avoid clicks
-        """
+        """Step 5: Create spatialized stereo mix with peak-aligned placement"""
         # Create empty stereo output
         output_samples = int(video_duration * sr)
         stereo_output = np.zeros((output_samples, 2), dtype=np.float32)
@@ -433,15 +397,6 @@ class SpatialAudioProcessor:
             
             # === CRITICAL: PEAK-ALIGNED PLACEMENT ===
             # Calculate where segment should START so its peak lands at detection_timestamp
-            # 
-            # Example:
-            #   detection_timestamp = 0.8s (where we want peak)
-            #   peak_offset = 0.25s (peak is 0.25s into segment)
-            #   placement_start = 0.8 - 0.25 = 0.55s
-            #   
-            #   So segment plays: 0.55s to (0.55 + duration)
-            #   And peak lands at: 0.55 + 0.25 = 0.8s ✓
-            
             placement_start_time = detection_timestamp - peak_offset
             placement_start_sample = int(placement_start_time * sr)
             
@@ -488,12 +443,7 @@ class SpatialAudioProcessor:
                                    reference_distance: float) -> np.ndarray:
         """
         Apply inverse distance law attenuation with configurable curve steepness
-        
-        Formula: attenuation_db = -6 * log2(distance_ratio ^ power)
-        - power = 1.0: Linear inverse (6dB per doubling) 
-        - power = 2.0: Inverse square law (12dB per doubling) - more dramatic
-        - Higher power = steeper curve at extremes
-        
+    
         Args:
             audio: Mono audio segment
             distance: Hip-heel pixel distance for this footstep
@@ -524,16 +474,7 @@ class SpatialAudioProcessor:
                                   audio: np.ndarray,
                                   x_position: float) -> np.ndarray:
         """
-        Apply constant power panning (-3dB pan law) with Logic Pro range
-
-        Industry standard: sin/cos taper ensures constant perceived loudness
-        Panning range: Logic Pro -41 to +41 (out of -64 to +64 scale)
-        Mathematical range: ±0.640625 (-41/64 to +41/64)
-
-        Expected behavior:
-        - At center (0.5): 70.7% left / 70.7% right (both channels at -3dB)
-        - At left (0.0): ~23% left / ~97% right (Logic Pro pan = -41)
-        - At right (1.0): ~97% left / ~23% right (Logic Pro pan = +41)
+        Apply constant power panning (-3dB pan law)
 
         Args:
             audio: Mono audio segment
@@ -545,20 +486,15 @@ class SpatialAudioProcessor:
         # Clamp x_position to valid range
         x_position = np.clip(x_position, 0.0, 1.0)
 
-        # Scale x_position to Logic Pro -41 to +41 range (out of -64 to +64)
         # -41/64 = -0.640625, +41/64 = +0.640625
-        # This matches the exact panning range you tested in Logic Pro
         center = 0.5
         logic_pro_range = 0.640625  # -41/64 to +41/64
         scaled_x = center + (x_position - center) * logic_pro_range
         
         # Convert scaled x-position (0-1) to pan angle (-π/2 to +π/2)
-        # Scaled by Logic Pro range (±0.640625) for -41 to +41 panning
         pan_angle = (scaled_x - 0.5) * math.pi
 
         # Constant power panning (sin/cos taper)
-        # At center: both channels at -3dB
-        # At extremes: Logic Pro -41/+41 range
         left_gain = math.cos(pan_angle * 0.5 + math.pi / 4)
         right_gain = math.sin(pan_angle * 0.5 + math.pi / 4)
         
@@ -573,12 +509,7 @@ class SpatialAudioProcessor:
                                audio: np.ndarray,
                                video_duration: float,
                                sr: int) -> np.ndarray:
-        """
-        Step 6: Final processing
-        - Match exact video duration
-        - Apply fade in/out
-        - Final normalization to -6dB (professional SFX standard)
-        """
+        """Step 6: Final processing"""
         target_samples = int(video_duration * sr)
         current_samples = len(audio)
 
@@ -605,7 +536,7 @@ class SpatialAudioProcessor:
 
         print(f"   Applied {fade_samples/sr:.3f}s fade in/out")
 
-        # Final normalization to -6dB (professional SFX standard)
+        # Final normalization to -6dB
         peak = np.max(np.abs(audio))
         if peak > 0:
             target_peak = 10 ** (-6.0 / 20)  # -6dB
@@ -716,10 +647,8 @@ class SpatialAudioProcessor:
         plt.close()
 
 
-# ============================================================================
-# DEVELOPER TESTING SECTION
-# ============================================================================
 
+# DEVELOPER TESTING SECTION
 if __name__ == "__main__":
     """
     Standalone Spatial Audio Processor
@@ -737,15 +666,15 @@ if __name__ == "__main__":
     """
 
     # Use centralized configuration
-    from ..utils.config import get_test_audio, list_test_audios, PIPELINE_OUTPUTS_DIR, TEST_AUDIOS_DIR
+    from pathlib import Path
     import sys
+    sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+    from src.utils.config import get_test_audio, list_test_audios, PIPELINE_OUTPUTS_DIR, TEST_AUDIOS_DIR
     import argparse
     import os
 
-    # ========================================================================
-    # COMMAND LINE ARGUMENTS
-    # ========================================================================
 
+    # COMMAND LINE ARGUMENTS
     parser = argparse.ArgumentParser(
         description='Standalone spatial audio processor - test audio with 4 spatial scenarios'
     )
@@ -760,10 +689,8 @@ if __name__ == "__main__":
     print("SPATIAL AUDIO PROCESSOR - STANDALONE TEST")
     print("=" * 80)
 
-    # ========================================================================
-    # AUDIO FILE SELECTION
-    # ========================================================================
 
+    # AUDIO FILE SELECTION
     if args.audio_file:
         # User specified an audio file
         AUDIO_FILE = args.audio_file
@@ -800,7 +727,7 @@ if __name__ == "__main__":
     OUTPUT_DIR = str(PIPELINE_OUTPUTS_DIR / "spatial_test")
     Path(OUTPUT_DIR).mkdir(parents=True, exist_ok=True)
     
-    # Ground truth timestamps from walk4.mp4
+    # Mock ground truth timestamps
     GROUND_TRUTH_TIMESTAMPS = [
         0.517,
         1.817,
@@ -814,17 +741,17 @@ if __name__ == "__main__":
         11.917
     ]
     
-    # Video info (from walk4.mp4)
+    # Video info
     VIDEO_INFO = {
         'fps': 60.0,
         'total_frames': 736,
-        'duration': 12.266666666666667
+        'duration': 12.266666666666667,
+        'width': 1920,
+        'height': 1080
     }
     
-    # ========================================================================
+
     # MOCK SCENARIO GENERATOR
-    # ========================================================================
-    
     def create_mock_scenario(scenario_name: str, timestamps: List[float]) -> Dict:
         """
         Create mock detection results for a spatial scenario
@@ -843,27 +770,25 @@ if __name__ == "__main__":
             # Calculate progress (0.0 to 1.0)
             progress = i / (num_steps - 1) if num_steps > 1 else 0.5
             
-            # Generate spatial data based on scenario
+            video_width = 1920  
+
             if scenario_name == "right_to_left":
-                # Walk from right (1.0) to left (0.0)
-                x_position = 1.0 - progress
-                distance = 0.5  # Constant distance
-                
-            elif scenario_name == "approaching":
-                # Walk toward camera (distance: far to close)
-                x_position = 0.5  # Center
-                distance = 1.0 - progress  # Far → close
-                
-            elif scenario_name == "walking_away":
-                # Walk away from camera (distance: close to far)
-                x_position = 0.5  # Center
-                distance = progress  # Close → far
-                
-            elif scenario_name == "stationary":
-                # Stay in same position
-                x_position = 0.5
+                # Walk from right to left IN PIXELS
+                x_position = (1.0 - progress) * video_width  
                 distance = 0.5
                 
+            elif scenario_name == "approaching":
+                x_position = 0.5 * video_width  # Center in pixels
+                distance = 1.0 - progress
+                
+            elif scenario_name == "walking_away":
+                x_position = 0.5 * video_width  # Center in pixels
+                distance = progress
+                
+            elif scenario_name == "stationary":
+                x_position = 0.5 * video_width  # Center in pixels
+                distance = 0.5
+                            
             else:
                 raise ValueError(f"Unknown scenario: {scenario_name}")
             
@@ -885,10 +810,8 @@ if __name__ == "__main__":
             'scenario_name': scenario_name
         }
     
-    # ========================================================================
-    # RUN TESTS
-    # ========================================================================
-    
+
+    # RUN TESTS  
     # Initialize processor
     processor = SpatialAudioProcessor(
         sample_rate=44100,
@@ -936,7 +859,7 @@ if __name__ == "__main__":
             print(f"\n✗ ERROR: {e}")
             print("\nPlease update AUDIO_FILE path in the script to match your local machine:")
             print(f"  Current: {AUDIO_FILE}")
-            print(f"  Expected: /path/to/your/heavy_boots_walking_on_marble_floor_with_echoing_footsteps.wav")
+            print(f"  Expected: /path/to/your/audio")
             break
         except Exception as e:
             print(f"\n✗ ERROR: {e}")

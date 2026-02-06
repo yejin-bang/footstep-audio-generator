@@ -1,13 +1,6 @@
 #!/usr/bin/env python3
 """
-RunPod Serverless Client - Call footstep generator from your Mac
-
-Usage:
-    python runpod_client.py --prompt "boots on marble" 
-
-Reads credentials from .env file:
-    RUNPOD_API_KEY=your_key_here
-    RUNPOD_ENDPOINT_URL=https://api.runpod.ai/v2/YOUR_ID/run
+RunPod Serverless Client
 """
 
 import requests
@@ -25,12 +18,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 def sanitize_filename(prompt: str, max_length: int = 50) -> str:
-    """
-    Convert prompt to valid filename.
-    - Replace spaces with underscores
-    - Remove special characters
-    - Truncate to max_length
-    """
+    """Convert prompt to valid filename."""
     import re
     from datetime import datetime
     
@@ -83,9 +71,7 @@ def call_serverless_endpoint(
     poll_interval: float = 2.0,
     timeout: int = None
 ) -> dict:
-    """
-    Call the RunPod serverless endpoint (ASYNC mode with polling).
-    """
+    """Call the RunPod serverless endpoint (ASYNC mode with polling)."""
     # Get timeout from .env if not provided
     if timeout is None:
         timeout = int(os.getenv("RUNPOD_TIMEOUT", "70"))
@@ -187,9 +173,8 @@ def call_serverless_endpoint(
         time.sleep(poll_interval)
 
 def save_audio_from_base64(audio_base64: str, output_path: Path, sample_rate: int):
-    """
-    Decode base64 NPZ and save as proper WAV file.
-    """
+    """Decode base64 NPZ and save as proper WAV file."""
+    
     print(f"Decoding and saving audio to: {output_path}")
     
     # Decode base64 to bytes

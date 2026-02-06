@@ -18,17 +18,6 @@ class AudioBackend(ABC):
 
     All backends must implement the generate() method to produce
     audio from text prompts.
-
-    Example Implementation:
-        >>> class MyBackend(AudioBackend):
-        ...     def __init__(self, **config):
-        ...         self.config = config
-        ...
-        ...     def generate(self, prompt, audio_length=6.0, **kwargs):
-        ...         # Your generation logic here
-        ...         audio = np.random.randn(2, int(audio_length * 44100))
-        ...         metadata = {"duration": audio_length}
-        ...         return audio, 44100, metadata
     """
 
     @abstractmethod
@@ -55,16 +44,6 @@ class AudioBackend(ABC):
                 - audio: NumPy array of shape [channels, samples]
                 - sample_rate: Audio sample rate (Hz)
                 - metadata: Dict with generation info (duration, device, etc.)
-
-        Raises:
-            NotImplementedError: If subclass doesn't implement this method
-            BackendError: If generation fails
-
-        Example:
-            >>> backend = get_backend("runpod")
-            >>> audio, sr, metadata = backend.generate("boots on marble")
-            >>> print(audio.shape, sr)
-            (2, 264600) 44100
         """
         raise NotImplementedError("Subclasses must implement generate()")
 
@@ -97,13 +76,6 @@ class AudioBackend(ABC):
                 - sample_rate: Audio sample rate (Hz)
                 - output_path: Path object where audio was saved
                 - metadata: Dict with generation info
-
-        Example:
-            >>> backend = get_backend("runpod")
-            >>> audio, sr, path, meta = backend.generate_and_save(
-            ...     "boots on marble",
-            ...     "output.wav"
-            ... )
         """
         import soundfile as sf
         from datetime import datetime
@@ -143,12 +115,6 @@ class AudioBackend(ABC):
 
         Returns:
             Dict with backend name, version, capabilities, etc.
-
-        Example:
-            >>> backend = get_backend("runpod")
-            >>> info = backend.get_info()
-            >>> print(info["name"])
-            runpod
         """
         return {
             "name": self.__class__.__name__,

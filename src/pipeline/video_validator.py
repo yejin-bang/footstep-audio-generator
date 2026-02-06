@@ -15,10 +15,6 @@ class VideoValidator:
             
         Returns:
             dict: Video information and validation results
-            
-        Raises:
-            FileNotFoundError: If video file doesn't exist
-            ValueError: If video cannot be opened or is invalid
         """
         video_path = Path(video_path)
         
@@ -143,8 +139,8 @@ if __name__ == "__main__":
     # Test the validator
     validator = VideoValidator()
     
-    # Update this path to your actual test video
-    test_video = "/Users/yejinbang/Documents/GitHub/sfx-project/test_videos/walk1.mp4"
+    # Update this path
+    test_video = "path_to_your_test_video"
     
     try:
         # Validate video

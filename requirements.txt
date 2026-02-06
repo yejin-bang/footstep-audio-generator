@@ -1,40 +1,56 @@
-# Core Dependencies
-numpy>=1.24.0
-scipy>=1.10.0
+# Core ML / PyTorch
+torch==2.2.2
+torchaudio==2.2.2
+torchvision==0.17.2
+pytorch-lightning==2.1.0
 
-# Computer Vision & Pose Estimation
-opencv-python>=4.8.0
-mediapipe>=0.10.0
+# Hugging Face ecosystem
+transformers==4.27.4
+accelerate==0.20.3
+safetensors==0.5.3
+huggingface-hub
 
-# Audio Processing
-soundfile>=0.12.0
-librosa>=0.10.0
+# stable_audio_tools dependencies (pinned because stable_audio_tools is installed from source)
+# Install stable_audio_tools via: pip install git+https://github.com/Stability-AI/stable-audio-tools.git
+einops==0.8.1
+ema-pytorch==0.2.3
+encodec==0.1.1
+descript-audio-codec==1.0.0
+k-diffusion==0.1.1
+v-diffusion-pytorch==0.0.2
+vector-quantize-pytorch==1.14.41
+x-transformers==1.26.6
+prefigure
 
-# Machine Learning / AI
-torch>=2.0.0
-torchvision>=0.15.0
-clip @ git+https://github.com/openai/CLIP.git
+# Audio processing
+librosa==0.11.0
+soundfile==0.13.1
+audioread==3.0.1
 
-# Visualization
-matplotlib>=3.7.0
+# Computer vision & image processing
+opencv-python
+mediapipe
+Pillow
+# Install OpenAI CLIP via: pip install git+https://github.com/openai/CLIP.git
 
-# API / Cloud Integration
-requests>=2.31.0
-python-dotenv>=1.0.0
+# Data & computation
+numpy
+scipy
+matplotlib
+tqdm
 
-# Development Tools
-pytest>=7.4.0
-pytest-cov>=4.1.0
+# HTTP & environment
+requests
+python-dotenv
 
-# Code Quality Tools (optional)
-# black>=23.0.0
-# flake8>=6.0.0
-# mypy>=1.0.0
+# Experiment tracking (used via pytorch-lightning and prefigure)
+wandb==0.15.4
+tensorboard==2.19.0
 
-# System Requirements (not Python packages):
-# - ffmpeg: Required for video merging (--merge-video flag)
-#   Install: brew install ffmpeg (macOS) | apt-get install ffmpeg (Linux)
+# Web interface
+fastapi==0.116.0
+uvicorn==0.35.0
+celery
 
-# Note: For local GPU audio generation (optional):
-# - Install LoRAW framework (custom, not on PyPI)
-# - Install stable-audio-tools from Stability AI
+# RunPod serverless
+runpod

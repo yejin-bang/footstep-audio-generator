@@ -41,9 +41,7 @@ class RunPodGenerationError(RunPodError):
 
 
 class RunPodClient:
-    """
-    Async RunPod client with job polling.
-    """
+    """Async RunPod client with job polling."""
 
     def __init__(
         self,
@@ -200,9 +198,7 @@ class RunPodClient:
         cfg_scale: float = 7.0,
         steps: int = 100
     ) -> Tuple[np.ndarray, int]:
-        """
-        Generate audio. Returns (numpy_array, sample_rate)
-        """
+        """Generate audio. Returns (numpy_array, sample_rate)"""
         print("\n" + "=" * 80)
         print("RunPod Async Audio Generation")
         print("=" * 80)
@@ -248,9 +244,8 @@ class RunPodClient:
         cfg_scale: float = 7.0,
         steps: int = 100
     ) -> Tuple[np.ndarray, int, Path]:
-        """
-        Generate audio and save to WAV using soundfile.
-        """
+        """Generate audio and save to WAV using soundfile."""
+        
         audio_np, sr = self.generate(prompt, audio_length, cfg_scale, steps)
 
         # soundfile expects shape [samples, channels]

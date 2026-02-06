@@ -1,0 +1,58 @@
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: footstep-redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  backend:
+    build:
+      context: .
+      dockerfile: web_interface/backend/Dockerfile
+    container_name: footstep-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+    volumes:
+      - ./web_interface/backend:/project/web_interface/backend
+      - ./src:/project/src                   
+      - ./outputs:/project/outputs            
+    depends_on:
+      redis:
+        condition: service_healthy
+    command: uvicorn app:app --host 0.0.0.0 --port 8000 --reload
+
+  celery:
+    build:
+      context: .
+      dockerfile: web_interface/backend/Dockerfile
+    container_name: footstep-celery
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+    volumes:
+      - ./web_interface/backend:/project/web_interface/backend
+      - ./src:/project/src                    
+      - ./outputs:/project/outputs            
+    depends_on:
+      redis:
+        condition: service_healthy
+    command: celery -A tasks worker --loglevel=info --pool=solo
+
+  frontend:
+    build:
+      context: web_interface/frontend
+      dockerfile: Dockerfile
+    container_name: footstep-frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./web_interface/frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend

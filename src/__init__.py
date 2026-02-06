@@ -15,7 +15,7 @@ Components:
 
 __version__ = "1.0.0"
 
-# Lazy imports - only import when accessed to avoid dependency issues
+# Only import when accessed to avoid dependency issues
 # This allows using utils/config without installing all pipeline dependencies
 def __getattr__(name):
     """Lazy import main components."""

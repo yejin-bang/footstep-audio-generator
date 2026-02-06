@@ -1,0 +1,274 @@
+AUDIO DATASET SPLIT ANALYSIS
+================================================================================
+
+
+╔═══════════════════════════════════════════════════════════╗
+║                    OVERALL STATISTICS                     ║
+╠═══════════════════════════════════════════════════════════╣
+║  Total segments:           1444                          ║
+║  Total parent files:       202                           ║
+║  Combinations:             32                            ║
+║                                                           ║
+║  Train segments:           1341    (92.9%)               ║
+║  Test segments:            103     (7.1%)                ║
+║                                                           ║
+║  Train parent files:       184                           ║
+║  Test parent files:        18                            ║
+║                                                           ║
+║  Train-only combos:        15                            ║
+║  Outside range combos:     24                            ║
+╚═══════════════════════════════════════════════════════════╝
+
+⚠ WARNING: 24 combinations outside 88-92% range (acceptable due to limited files)
+
+
+BREAKDOWN BY COMBINATION:
+--------------------------------------------------------------------------------
+
+concrete/barefoot:
+  Total parent files: 6
+  Total segments: 36
+  Strategy: bin-packing
+  Train: 5 files, 32 segments (88.9%)
+  Test: 1 files, 4 segments (11.1%)
+
+concrete/boots:
+  Total parent files: 12
+  Total segments: 84
+  Strategy: bin-packing
+  Train: 11 files, 76 segments (90.5%)
+  Test: 1 files, 8 segments (9.5%)
+
+concrete/dress:
+  Total parent files: 5
+  Total segments: 38
+  Strategy: bin-packing
+  Train: 4 files, 32 segments (84.2%)
+  Test: 1 files, 6 segments (15.8%)
+  ⚠ Outside acceptable range
+
+concrete/heels:
+  Total parent files: 5
+  Total segments: 37
+  Strategy: bin-packing
+  Train: 5 files, 37 segments (100.0%)
+  Test: 0 files, 0 segments (0.0%)
+  ⚠ Outside acceptable range
+
+concrete/sneakers:
+  Total parent files: 9
+  Total segments: 58
+  Strategy: bin-packing
+  Train: 8 files, 54 segments (93.1%)
+  Test: 1 files, 4 segments (6.9%)
+  ⚠ Outside acceptable range
+
+deck/barefoot:
+  Total parent files: 6
+  Total segments: 37
+  Strategy: bin-packing
+  Train: 5 files, 32 segments (86.5%)
+  Test: 1 files, 5 segments (13.5%)
+  ⚠ Outside acceptable range
+
+deck/boots:
+  Total parent files: 3
+  Total segments: 17
+  Strategy: train-only
+  Train: 3 files, 17 segments (100.0%)
+  Test: 0 files, 0 segments (0.0%)
+  ⚠ Outside acceptable range
+
+deck/dress:
+  Total parent files: 3
+  Total segments: 19
+  Strategy: train-only
+  Train: 3 files, 19 segments (100.0%)
+  Test: 0 files, 0 segments (0.0%)
+  ⚠ Outside acceptable range
+
+deck/sneakers:
+  Total parent files: 6
+  Total segments: 38
+  Strategy: bin-packing
+  Train: 5 files, 33 segments (86.8%)
+  Test: 1 files, 5 segments (13.2%)
+  ⚠ Outside acceptable range
+
+dirt/boots:
+  Total parent files: 1
+  Total segments: 15
+  Strategy: train-only
+  Train: 1 files, 15 segments (100.0%)
+  Test: 0 files, 0 segments (0.0%)
+  ⚠ Outside acceptable range
+
+dirt/dress:
+  Total parent files: 2
+  Total segments: 16
+  Strategy: train-only
+  Train: 2 files, 16 segments (100.0%)
+  Test: 0 files, 0 segments (0.0%)
+  ⚠ Outside acceptable range
+
+dirt/heels:
+  Total parent files: 1
+  Total segments: 14
+  Strategy: train-only
+  Train: 1 files, 14 segments (100.0%)
+  Test: 0 files, 0 segments (0.0%)
+  ⚠ Outside acceptable range
+
+dirt/sneakers:
+  Total parent files: 2
+  Total segments: 28
+  Strategy: train-only
+  Train: 2 files, 28 segments (100.0%)
+  Test: 0 files, 0 segments (0.0%)
+  ⚠ Outside acceptable range
+
+gravel/boots:
+  Total parent files: 3
+  Total segments: 42
+  Strategy: train-only
+  Train: 3 files, 42 segments (100.0%)
+  Test: 0 files, 0 segments (0.0%)
+  ⚠ Outside acceptable range
+
+leaves/boots:
+  Total parent files: 3
+  Total segments: 41
+  Strategy: train-only
+  Train: 3 files, 41 segments (100.0%)
+  Test: 0 files, 0 segments (0.0%)
+  ⚠ Outside acceptable range
+
+marble/boots:
+  Total parent files: 2
+  Total segments: 16
+  Strategy: train-only
+  Train: 2 files, 16 segments (100.0%)
+  Test: 0 files, 0 segments (0.0%)
+  ⚠ Outside acceptable range
+
+marble/dress:
+  Total parent files: 3
+  Total segments: 21
+  Strategy: train-only
+  Train: 3 files, 21 segments (100.0%)
+  Test: 0 files, 0 segments (0.0%)
+  ⚠ Outside acceptable range
+
+marble/heels:
+  Total parent files: 3
+  Total segments: 21
+  Strategy: train-only
+  Train: 3 files, 21 segments (100.0%)
+  Test: 0 files, 0 segments (0.0%)
+  ⚠ Outside acceptable range
+
+metal/boots:
+  Total parent files: 4
+  Total segments: 29
+  Strategy: bin-packing
+  Train: 4 files, 29 segments (100.0%)
+  Test: 0 files, 0 segments (0.0%)
+  ⚠ Outside acceptable range
+
+metal/dress:
+  Total parent files: 3
+  Total segments: 18
+  Strategy: train-only
+  Train: 3 files, 18 segments (100.0%)
+  Test: 0 files, 0 segments (0.0%)
+  ⚠ Outside acceptable range
+
+metal/heels:
+  Total parent files: 3
+  Total segments: 21
+  Strategy: train-only
+  Train: 3 files, 21 segments (100.0%)
+  Test: 0 files, 0 segments (0.0%)
+  ⚠ Outside acceptable range
+
+metal/sneakers:
+  Total parent files: 6
+  Total segments: 41
+  Strategy: bin-packing
+  Train: 5 files, 35 segments (85.4%)
+  Test: 1 files, 6 segments (14.6%)
+  ⚠ Outside acceptable range
+
+mud/boots:
+  Total parent files: 5
+  Total segments: 39
+  Strategy: bin-packing
+  Train: 4 files, 36 segments (92.3%)
+  Test: 1 files, 3 segments (7.7%)
+  ⚠ Outside acceptable range
+
+sand/barefoot:
+  Total parent files: 5
+  Total segments: 55
+  Strategy: bin-packing
+  Train: 4 files, 53 segments (96.4%)
+  Test: 1 files, 2 segments (3.6%)
+  ⚠ Outside acceptable range
+
+sand/sneakers:
+  Total parent files: 3
+  Total segments: 28
+  Strategy: train-only
+  Train: 3 files, 28 segments (100.0%)
+  Test: 0 files, 0 segments (0.0%)
+  ⚠ Outside acceptable range
+
+snow/boots:
+  Total parent files: 4
+  Total segments: 32
+  Strategy: bin-packing
+  Train: 3 files, 29 segments (90.6%)
+  Test: 1 files, 3 segments (9.4%)
+
+water/boots:
+  Total parent files: 1
+  Total segments: 9
+  Strategy: train-only
+  Train: 1 files, 9 segments (100.0%)
+  Test: 0 files, 0 segments (0.0%)
+  ⚠ Outside acceptable range
+
+wood/barefoot:
+  Total parent files: 24
+  Total segments: 154
+  Strategy: bin-packing
+  Train: 22 files, 139 segments (90.3%)
+  Test: 2 files, 15 segments (9.7%)
+
+wood/boots:
+  Total parent files: 9
+  Total segments: 63
+  Strategy: bin-packing
+  Train: 8 files, 57 segments (90.5%)
+  Test: 1 files, 6 segments (9.5%)
+
+wood/dress:
+  Total parent files: 15
+  Total segments: 87
+  Strategy: bin-packing
+  Train: 14 files, 79 segments (90.8%)
+  Test: 1 files, 8 segments (9.2%)
+
+wood/heels:
+  Total parent files: 18
+  Total segments: 119
+  Strategy: bin-packing
+  Train: 17 files, 108 segments (90.8%)
+  Test: 1 files, 11 segments (9.2%)
+
+wood/sneakers:
+  Total parent files: 27
+  Total segments: 171
+  Strategy: bin-packing
+  Train: 24 files, 154 segments (90.1%)
+  Test: 3 files, 17 segments (9.9%)

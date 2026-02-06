@@ -2,7 +2,7 @@
 Mock Backend for Testing
 
 Generates synthetic audio for testing the pipeline without requiring
-a GPU or API access. Useful for development and CI/CD.
+a GPU or API access.
 """
 
 import numpy as np
@@ -16,23 +16,7 @@ class MockBackend(AudioBackend):
     Mock audio generation backend for testing.
 
     Generates synthetic audio (sine waves, noise, or silence) instead of
-    using a real model. Useful for:
-    - Testing pipeline logic without GPU
-    - CI/CD testing
-    - Development when API is unavailable
-    - Quick prototyping
-
-    Example:
-        >>> backend = MockBackend(mode="sine")
-        >>> audio, sr, metadata = backend.generate("boots on marble")
-        >>> print(audio.shape)
-        (2, 264600)  # 6 seconds at 44100 Hz
-
-    Modes:
-        - "sine": Generate sine wave (440 Hz)
-        - "noise": Generate white noise
-        - "silence": Generate silence
-        - "footsteps": Generate synthetic footstep-like clicks
+    using a real model.
     """
 
     def __init__(self, mode: str = "footsteps", sample_rate: int = 44100):
@@ -128,7 +112,6 @@ class MockBackend(AudioBackend):
     def _generate_footsteps(self, num_samples: int, duration: float) -> np.ndarray:
         """
         Generate synthetic footstep-like audio.
-
         Creates a series of short noise bursts that mimic footsteps.
         """
         audio = np.zeros((2, num_samples))

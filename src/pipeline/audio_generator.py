@@ -15,9 +15,8 @@ import numpy as np
 
 from ..audio_backends import get_backend, list_backends
 
-# ----------------------------------------------------------------------
+
 # Utility functions
-# ----------------------------------------------------------------------
 def create_safe_filename(text: str, max_length: int = 100) -> str:
     """Create filesystem-safe filename from text."""
     safe = "".join(c if c.isalnum() or c in (' ', '-', '_') else '_' for c in text)
@@ -25,9 +24,8 @@ def create_safe_filename(text: str, max_length: int = 100) -> str:
     return safe[:max_length]
 
 
-# ----------------------------------------------------------------------
+
 # Main Generation Function
-# ----------------------------------------------------------------------
 def generate_footsteps(
     prompt: str,
     output_dir: str = "outputs/generated",
@@ -54,21 +52,6 @@ def generate_footsteps(
 
     Returns:
         Tuple of (audio_array, sample_rate, output_path, metadata)
-
-    Example:
-        >>> # Use RunPod backend (default)
-        >>> audio, sr, path, meta = generate_footsteps("boots on marble")
-
-        >>> # Use mock backend for testing
-        >>> audio, sr, path, meta = generate_footsteps(
-        ...     "boots on marble",
-        ...     backend="mock",
-        ...     mode="footsteps"
-        ... )
-
-    Raises:
-        ValueError: If backend is not available
-        RuntimeError: If generation fails
     """
     import time
 
@@ -132,9 +115,8 @@ def generate_footsteps(
     }
 
     return audio, sample_rate, output_path, metadata
-# ----------------------------------------------------------------------
+
 # CLI
-# ----------------------------------------------------------------------
 def main():
     """Command-line interface for audio generation."""
     parser = argparse.ArgumentParser(

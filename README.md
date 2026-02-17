@@ -4,7 +4,7 @@
 
 An end-to-end system that generates realistic footstep sound effects from video, automatically synchronized with character movement and spatially processed. Designed and built to solve one of the most time-consuming tasks in audio post-production: creating believable, frame-accurate footsteps at scale.
 
-[Demo Video](https://youtu.be/2v67SE0sxHg)
+[Demo Video](https://youtu.be/-JOL4X8YN6o)
 
 ---
 
